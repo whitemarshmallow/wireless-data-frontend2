@@ -9,11 +9,11 @@
         <div class="module-list">
           <div class="module-item" @click="addModule('viavi-data')">
             <i class="icon-database"></i>
-            <span>仿真数据下载</span>
+            <span>仿真数据加载</span>
           </div>
           <div class="module-item" @click="addModule('livenet-data')">
             <i class="icon-network"></i>
-            <span>现网数据下载</span>
+            <span>现网数据加载</span>
           </div>
         </div>
       </div>
@@ -252,14 +252,14 @@
 
         <!-- 动态渲染对应的配置组件 -->
         <div class="config-content">
-          <!-- 仿真数据下载配置 -->
+          <!-- 仿真数据加载配置 -->
           <ViaviDataConfig
             v-if="selectedNode.type === 'viavi-data'"
             v-model="selectedNode.config"
             @config-change="handleConfigChange"
           />
 
-          <!-- 现网数据下载配置 -->
+          <!-- 现网数据加载配置 -->
           <LiveNetDataConfig
             v-if="selectedNode.type === 'livenet-data'"
             v-model="selectedNode.config"
@@ -524,7 +524,7 @@ const baseUrl = null; // 使用全局配置
 // 执行阶段定义
 const executionStages = ref([
   { id: "start", name: "任务流开始执行", status: "pending" },
-  { id: "download", name: "数据正在下载", status: "pending" },
+  { id: "download", name: "数据正在加载", status: "pending" },
   { id: "scenario", name: "确定选择场景", status: "pending" },
   { id: "image", name: "开始图像生成", status: "pending" },
   { id: "analysis", name: "开始模型分析", status: "pending" },
@@ -536,7 +536,7 @@ console.log("响应式变量初始化完成");
 // 模块定义
 const moduleDefinitions = {
   "viavi-data": {
-    name: "仿真数据下载",
+    name: "仿真数据加载",
     icon: "icon-database",
     type: "viavi-data",
     defaultConfig: {
@@ -548,7 +548,7 @@ const moduleDefinitions = {
     },
   },
   "livenet-data": {
-    name: "现网数据下载",
+    name: "现网数据加载",
     icon: "icon-network",
     type: "livenet-data",
     defaultConfig: {
@@ -878,7 +878,7 @@ const executeFlow = async () => {
 
   if (missingModules.length > 0) {
     ElMessage.warning(
-      "请确保已配置：仿真数据下载、场景选择、图像选择、模型分析"
+      "请确保已配置：仿真数据加载、场景选择、图像选择、模型分析"
     );
     return;
   }
@@ -919,7 +919,7 @@ const executeFlow = async () => {
     if (executionCanceled.value) return;
     updateStageStatus("start", "completed");
 
-    // 阶段2: 数据下载
+    // 阶段2: 数据加载
     updateStageStatus("download", "running");
     await downloadViaviData(viaviConfig);
     if (executionCanceled.value) return;
@@ -1043,9 +1043,9 @@ const updateStageStatus = (stageId, status, error = null) => {
 // 延迟函数
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// 仿真数据下载
+// 仿真数据加载
 const downloadViaviData = async (config) => {
-  console.log("下载仿真数据:", config);
+  console.log("加载仿真数据:", config);
   const viaviConfig = flowNodes.value.find(
     (n) => n.type === "viavi-data"
   ).config;

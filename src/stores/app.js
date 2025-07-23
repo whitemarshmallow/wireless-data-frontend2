@@ -7,7 +7,7 @@ export const useAppStore = defineStore("app", {
 
     // 平台核心信息
     platformInfo: {
-      name: "Wi-Dop",
+      name: "Wi-Dop |",
       fullName: "无线数据一站式平台",
       englishName: "Wireless Data One-stop Platform",
       slogan: "一站聚合，双擎智变，三性护航，四景落地，五维进化",

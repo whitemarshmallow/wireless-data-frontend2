@@ -3,28 +3,15 @@
     <!-- 页面头部 -->
     <section class="page-header">
       <div class="header-container">
-        <div class="breadcrumb">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item>
-              <router-link to="/scenarios">应用场景</router-link>
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>AI for RAN</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
-
         <div class="header-content">
           <div class="header-info">
             <h1 class="page-title">AI for RAN</h1>
             <p class="page-subtitle">利用人工智能技术优化无线网络性能</p>
             <div class="page-tags">
-              <el-tag type="success">网络优化</el-tag>
-              <el-tag type="primary">机器学习</el-tag>
-              <el-tag type="warning">实时处理</el-tag>
+              <el-tag class="custom-tag">网络优化</el-tag>
+              <el-tag class="custom-tag">机器学习</el-tag>
+              <el-tag class="custom-tag">实时处理</el-tag>
             </div>
-          </div>
-
-          <div class="header-icon">
-            <el-icon class="scenario-icon"><Cpu /></el-icon>
           </div>
         </div>
       </div>
@@ -78,7 +65,7 @@
                 @click.stop="startCase(case_item.id)"
                 :disabled="selectedCase !== case_item.id"
               >
-                开始体验
+                开始调试
               </el-button>
             </div>
           </div>
@@ -106,7 +93,7 @@ export default {
         description:
           "利用机器学习算法优化小区间的乒乓切换问题，减少不必要的切换次数",
         icon: "Connection",
-        improvement: "30%",
+        improvement: "↑ 30%",
         complexity: 3,
         route: "/pingpong-switch", // 对应的路由
       },
@@ -116,8 +103,8 @@ export default {
         description:
           "可视化任务流编排页面，支持模块化创建数据处理工作流，一键执行获取结果。",
         icon: "Connection",
-        improvement: "60%",
-        complexity: 6,
+        improvement: "↑ 50%",
+        complexity: 5,
         route: "/task-flow-editor", // 对应的路由
       },
     ]);
@@ -154,55 +141,137 @@ export default {
 <style scoped>
 .ai-for-ran-page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #fff;
 }
 
 /* 页面头部 */
 .page-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 40px 0 60px;
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: #d9d9d9;
+  background-image: url("../../assets/AIForRAN/bg.png");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* 渐变蒙版 */
+.page-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+/* 右侧main图 */
+.page-header::after {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-image: url("../../assets/AIForRAN/main.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 2;
 }
 
 .header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.breadcrumb {
-  margin-bottom: 24px;
-}
-
-.breadcrumb :deep(.el-breadcrumb__inner) {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.breadcrumb :deep(.el-breadcrumb__inner:hover) {
-  color: white;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
 }
 
 .header-content {
+  position: absolute;
+  width: 640px;
+  height: 144px;
+  left: 100px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 640px;
+  height: 144px;
 }
 
 .page-title {
+  font-family: "HarmonyOS Sans SC", sans-serif;
+  font-style: normal;
+  font-weight: 700;
   font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 12px;
+  line-height: 56px;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #263fff 0%, #00e5e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  width: 264px;
+  height: 56px;
+  display: flex;
+  align-items: center;
 }
 
 .page-subtitle {
-  font-size: 18px;
-  opacity: 0.9;
-  margin-bottom: 16px;
+  font-family: "HarmonyOS Sans SC", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  color: #202939;
+  margin: 0;
+  width: 640px;
+  height: 28px;
+  display: flex;
+  align-items: center;
 }
 
 .page-tags {
   display: flex;
-  gap: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  width: 232px;
+  height: 28px;
+}
+
+.custom-tag {
+  background: #f5f8fb !important;
+  border: none !important;
+  border-radius: 6px !important;
+  color: #4a5366 !important;
+  font-family: "HarmonyOS Sans SC", sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  padding: 4px 8px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 72px !important;
+  justify-content: center !important;
+}
+
+.header-icon {
+  display: none; /* 隐藏原来的图标，因为设计中没有 */
 }
 
 .scenario-icon {
@@ -244,7 +313,7 @@ export default {
 }
 
 .case-card {
-  background: white;
+  background: #e3e8ef;
   border-radius: 16px;
   padding: 32px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -281,7 +350,7 @@ export default {
 }
 
 .case-description {
-  color: var(--text-regular);
+  color: #697586;
   line-height: 1.6;
   margin-bottom: 24px;
 }
@@ -298,7 +367,7 @@ export default {
 }
 
 .metric-label {
-  color: var(--text-secondary);
+  color: #4a5366;
 }
 
 .metric-value {
@@ -312,14 +381,42 @@ export default {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .page-title {
-    font-size: 32px;
+  .page-header::after {
+    width: 250px;
+    height: 250px;
+    right: -50px;
   }
 
   .header-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 24px;
+    left: 24px;
+    width: calc(100% - 200px);
+  }
+
+  .header-info {
+    width: 100%;
+  }
+
+  .page-title {
+    font-size: 32px;
+    width: auto;
+    height: auto;
+  }
+
+  .page-subtitle {
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+  }
+
+  .page-tags {
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+    flex-wrap: wrap;
+  }
+
+  .custom-tag {
+    width: auto !important;
   }
 
   .cases-grid {

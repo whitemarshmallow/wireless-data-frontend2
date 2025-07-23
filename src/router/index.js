@@ -21,6 +21,17 @@ const routes = [
     },
   },
   {
+    path: "/viavi-download",
+    name: "ViaviDownload",
+    component: () => import("@/components/data/download/ViaviDataDownload.vue"),
+  },
+  {
+    path: "/livenet-download",
+    name: "LiveNetDownload",
+    component: () =>
+      import("@/components/data/download/LiveNetDataDownload.vue"),
+  },
+  {
     path: "/scenarios",
     name: "Scenarios",
     component: Scenarios,

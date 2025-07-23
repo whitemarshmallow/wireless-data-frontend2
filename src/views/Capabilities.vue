@@ -141,12 +141,7 @@ export default {
     // 获取能力特点
     const getCapabilityFeatures = (capabilityId) => {
       const featuresMap = {
-        universality: [
-          "支持多种数据源格式",
-          "统一数据规范标准",
-          "智能数据转换",
-          "跨平台兼容性",
-        ],
+        universality: ["支持多种数据源格式", "智能数据转换", "跨平台兼容性"],
         incubation: [
           "智能数据分类",
           "自动数据增强",

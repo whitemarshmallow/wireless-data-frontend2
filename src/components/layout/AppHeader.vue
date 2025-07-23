@@ -5,7 +5,7 @@
       <div class="logo-section">
         <router-link to="/" class="logo-link">
           <div class="logo">
-            <el-icon class="logo-icon"><DataBoard /></el-icon>
+            <img class="logo-img" src="../../assets/home/logo.png" />
             <span class="logo-text">{{ appStore.platformInfo.name }}</span>
           </div>
           <span class="platform-name">{{
@@ -17,31 +17,52 @@
       <!-- 自定义导航菜单 -->
       <nav class="nav-menu">
         <div class="custom-menu">
+          <!-- 无线AI开发平台 (下拉菜单) -->
           <router-link
             to="/"
-            class="menu-item"
+            class="menu-item dropdown-trigger"
             :class="{ 'is-active': activeIndex === '/' }"
           >
-            <el-icon><House /></el-icon>
+            <el-icon><Monitor /></el-icon>
             <span>无线AI开发平台</span>
           </router-link>
+          <!-- 无线数据仓库 -->
+          <div class="menu-item-wrapper dropdown-wrapper">
+            <router-linkc
+              class="menu-item"
+              :class="{ 'is-active': activeIndex === '/data-warehouse' }"
+            >
+              <el-icon><DataBoard /></el-icon>
+              <span>无线数据仓库</span>
+            </router-linkc>
+            <div class="dropdown-menu">
+              <router-link
+                to="/viavi-download"
+                class="dropdown-item"
+                :class="{ 'is-active': activeIndex === '/viavi-download' }"
+              >
+                <el-icon><Setting /></el-icon>
+                <span>仿真数据下载</span>
+              </router-link>
+              <router-link
+                to="/livenet-download"
+                class="dropdown-item"
+                :class="{ 'is-active': activeIndex === '/livenet-download' }"
+              >
+                <el-icon><Setting /></el-icon>
+                <span>现网数据下载</span>
+              </router-link>
+            </div>
+          </div>
 
-          <router-link
-            to="/capabilities"
-            class="menu-item"
-            :class="{ 'is-active': activeIndex === '/capabilities' }"
-          >
-            <el-icon><Setting /></el-icon>
-            <span>平台五大能力</span>
-          </router-link>
-
+          <!-- 无线工具库 -->
           <router-link
             to="/scenarios"
             class="menu-item"
             :class="{ 'is-active': activeIndex === '/scenarios' }"
           >
-            <el-icon><Monitor /></el-icon>
-            <span>无线工具库</span>
+            <el-icon><Connection /></el-icon>
+            <span>应用场景</span>
           </router-link>
         </div>
       </nav>
@@ -50,16 +71,9 @@
       <div class="header-actions">
         <div class="action-buttons">
           <el-button type="text" class="action-btn">
-            <el-icon><Document /></el-icon>
-            文档
-          </el-button>
-
-          <el-button type="text" class="action-btn">
             <el-icon><ChatLineRound /></el-icon>
-            社区
+            开放式平台
           </el-button>
-
-          <el-button type="primary" class="login-btn"> 登录 </el-button>
         </div>
       </div>
     </div>
@@ -131,22 +145,34 @@ export default {
   margin-right: 12px;
 }
 
-.logo-icon {
+.logo-img {
   font-size: 24px;
   color: #409eff;
   margin-right: 8px;
+  width: 28px;
+  height: 28px;
+  opacity: 1;
 }
 
 .logo-text {
-  font-size: 18px;
+  font-size: 16px;
+  color: #202939;
+  font-family: "DingTalk JinBuTi";
+  font-weight: 400;
+  line-height: 24px;
+  font-style: italic;
   font-weight: bold;
-  color: white;
 }
 
 .platform-name {
-  font-size: 14px;
-  color: #909399;
+  font-size: 16px;
+  color: #202939;
   white-space: nowrap;
+  font-family: "DingTalk JinBuTi";
+  font-weight: 400;
+  line-height: 24px;
+  font-style: italic;
+  font-weight: bold;
 }
 
 /* 自定义导航菜单 */
@@ -159,7 +185,17 @@ export default {
 .custom-menu {
   display: flex;
   align-items: center;
-  gap: 0;
+  opacity: 1;
+  gap: 10px;
+  border-radius: 8px;
+  padding-top: 7px;
+  padding-right: 16px;
+  padding-bottom: 7px;
+  padding-left: 16px;
+}
+
+.menu-item-wrapper {
+  position: relative;
 }
 
 .menu-item {
@@ -167,7 +203,8 @@ export default {
   align-items: center;
   gap: 8px;
   padding: 0 20px;
-  height: 60px;
+  width: 130;
+  height: 40;
   color: #ffffff;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -180,18 +217,103 @@ export default {
 }
 
 .menu-item.is-active {
-  background-color: rgba(64, 158, 255, 0.1);
-  color: #409eff;
-  border-bottom-color: #409eff;
+  background-color: #263fff1a;
+  color: #263fff;
+  width: 130;
+  height: 40;
+  opacity: 1;
+  gap: 10px;
+  border-radius: 8px;
+  padding-top: 7px;
+  padding-right: 16px;
+  padding-bottom: 7px;
+  padding-left: 16px;
 }
 
 .menu-item .el-icon {
   font-size: 16px;
 }
 
+.el-icon svg {
+  color: #263fff;
+}
+
 .menu-item span {
   font-size: 14px;
   white-space: nowrap;
+  color: #000;
+}
+
+/* 下拉菜单样式 */
+.dropdown-wrapper:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-trigger {
+  cursor: pointer;
+}
+
+.dropdown-trigger:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #409eff;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-wrapper:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: none;
+  height: auto;
+}
+
+.dropdown-item:hover {
+  background-color: #f8fafc;
+  color: #409eff;
+}
+
+.dropdown-item.is-active {
+  background-color: rgba(64, 158, 255, 0.1);
+  color: #409eff;
+  border-bottom: none;
+}
+
+.dropdown-item .el-icon {
+  font-size: 14px;
+}
+
+.dropdown-item span {
+  font-size: 14px;
 }
 
 /* 右侧操作区 */
@@ -206,7 +328,7 @@ export default {
 }
 
 .action-btn {
-  color: #ffffff !important;
+  color: black !important;
   padding: 8px 16px;
 }
 
@@ -237,6 +359,14 @@ export default {
     display: none;
   }
 
+  .dropdown-menu {
+    min-width: 150px;
+  }
+
+  .dropdown-item span {
+    display: block;
+  }
+
   .action-buttons .action-btn span {
     display: none;
   }
@@ -245,6 +375,12 @@ export default {
 @media (max-width: 480px) {
   .menu-item {
     padding: 0 8px;
+  }
+
+  .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 180px;
   }
 }
 </style>

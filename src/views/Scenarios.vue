@@ -4,17 +4,21 @@
     <!-- 页面头部 -->
     <section class="page-header">
       <div class="header-container">
-        <h1 class="page-title">应用场景</h1>
-        <p class="page-subtitle">
-          支撑运营、维护、优化、规划四大场景的数字化转型
-        </p>
+        <div class="header-content">
+          <h1 ref="pageTitle" class="page-title animate-fade-up">应用场景</h1>
+          <p ref="pageSubtitle" class="page-subtitle animate-fade-up">
+            支撑运营、维护、优化、规划四大场景的数字化转型
+          </p>
+        </div>
       </div>
     </section>
 
     <!-- 场景选择器 -->
     <section class="scenario-selector">
       <div class="selector-container">
-        <h2 class="selector-title">选择应用场景</h2>
+        <h2 ref="selectorTitle" class="selector-title animate-fade-up">
+          选择应用场景
+        </h2>
         <div class="scenarios-grid">
           <div
             v-for="scenario in appStore.scenarios"
@@ -24,114 +28,66 @@
               active: selectedScenario === scenario.id,
               'coming-soon': scenario.status === 'coming-soon',
             }"
-            @click="selectScenario(scenario)"
           >
-            <div class="card-header">
-              <div class="scenario-icon">
-                <el-icon><component :is="scenario.icon" /></el-icon>
-              </div>
-
-              <div
-                v-if="scenario.status === 'coming-soon'"
-                class="coming-soon-badge"
-              >
-                即将推出
-              </div>
+            <!-- 即将推出徽章 -->
+            <div
+              v-if="scenario.status === 'coming-soon'"
+              class="coming-soon-badge"
+            >
+              即将推出
             </div>
 
             <div class="card-content">
-              <h3 class="scenario-name">{{ scenario.name }}</h3>
-              <h4 class="scenario-title">{{ scenario.title }}</h4>
-              <p class="scenario-desc">{{ scenario.description }}</p>
+              <div class="scenario-info">
+                <div class="scenario-name-container">
+                  <h3 class="scenario-name">{{ scenario.name }}</h3>
+                  <h3 class="scenario-name">{{ scenario.title }}</h3>
+                </div>
+                <h4 class="scenario-title">{{ scenario.description }}</h4>
+              </div>
 
-              <!-- 案例列表 -->
+              <!-- 案例列表 - 只在非即将推出状态显示 -->
               <div
-                v-if="scenario.cases && scenario.cases.length"
+                v-if="
+                  scenario.cases &&
+                  scenario.cases.length &&
+                  scenario.status !== 'coming-soon'
+                "
                 class="scenario-cases"
               >
                 <div class="cases-label">应用案例：</div>
                 <div class="cases-list">
-                  <el-tag
+                  <div
                     v-for="case_item in scenario.cases"
                     :key="case_item"
-                    size="small"
                     class="case-tag"
                   >
                     {{ case_item }}
-                  </el-tag>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="card-actions">
-              <el-button
-                v-if="scenario.status !== 'coming-soon'"
-                type="primary"
-                @click.stop="enterScenario(scenario.id)"
-              >
-                进入场景
-              </el-button>
-              <el-button v-else disabled> 敬请期待 </el-button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 场景详情展示 -->
-    <section v-if="selectedScenarioData" class="scenario-detail">
-      <div class="detail-container">
-        <div class="detail-header">
-          <div class="detail-icon">
-            <el-icon><component :is="selectedScenarioData.icon" /></el-icon>
-          </div>
-          <div class="detail-info">
-            <h2 class="detail-name">{{ selectedScenarioData.name }}</h2>
-            <h3 class="detail-title">{{ selectedScenarioData.title }}</h3>
-            <p class="detail-description">
-              {{ selectedScenarioData.description }}
-            </p>
-          </div>
-        </div>
-
-        <!-- 场景工具和选项 -->
-        <div class="scenario-tools">
-          <div class="tools-section">
-            <h4 class="tools-title">数据集选择</h4>
-            <el-select
-              v-model="selectedDataset"
-              placeholder="请选择数据集"
-              style="width: 100%"
+            <!-- 使用 button 替代 div -->
+            <button
+              class="card-action-button"
+              :class="{
+                primary: scenario.status !== 'coming-soon',
+                disabled: scenario.status === 'coming-soon',
+              }"
+              @click="handleCardAction(scenario)"
+              :disabled="scenario.status === 'coming-soon'"
             >
-              <el-option
-                v-for="dataset in getScenarioDatasets(selectedScenario)"
-                :key="dataset.id"
-                :label="dataset.name"
-                :value="dataset.id"
-              />
-            </el-select>
-          </div>
-
-          <div class="tools-section">
-            <h4 class="tools-title">算法选择</h4>
-            <el-select
-              v-model="selectedAlgorithm"
-              placeholder="请选择算法"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="algorithm in getScenarioAlgorithms(selectedScenario)"
-                :key="algorithm.id"
-                :label="algorithm.name"
-                :value="algorithm.id"
-              />
-            </el-select>
-          </div>
-
-          <div class="tools-section">
-            <el-button type="primary" size="large" @click="startExperiment">
-              开始实验
-            </el-button>
+              <div class="button-content">
+                <span>{{
+                  scenario.status === "coming-soon" ? "敬请期待" : "进入场景"
+                }}</span>
+                <div
+                  class="arrow-icon"
+                  :class="{ disabled: scenario.status === 'coming-soon' }"
+                ></div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -140,7 +96,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
 import { ElMessage } from "element-plus";
@@ -155,10 +111,114 @@ export default {
     const selectedDataset = ref(null);
     const selectedAlgorithm = ref(null);
 
-    // 当前选中的场景数据
-    const selectedScenarioData = computed(() => {
-      if (!selectedScenario.value) return null;
-      return appStore.getScenarioById(selectedScenario.value);
+    // 动画相关的refs - 只针对头部和标题
+    const pageTitle = ref(null);
+    const pageSubtitle = ref(null);
+    const selectorTitle = ref(null);
+
+    // Intersection Observer - 只观察头部和标题元素
+    let observer = null;
+
+    const createObserver = () => {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const element = entry.target;
+
+              // 为不同类型的元素添加不同的动画延迟
+              if (element === pageTitle.value) {
+                // 页面标题立即显示
+                setTimeout(() => {
+                  element.classList.add("animate-visible");
+                }, 100);
+              } else if (element === pageSubtitle.value) {
+                // 副标题稍微延迟
+                setTimeout(() => {
+                  element.classList.add("animate-visible");
+                }, 200);
+              } else if (element === selectorTitle.value) {
+                // 选择器标题延迟更多
+                setTimeout(() => {
+                  element.classList.add("animate-visible");
+                }, 100);
+              }
+
+              // 停止观察已经显示的元素
+              observer.unobserve(element);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: "0px 0px -100px 0px",
+        }
+      );
+    };
+
+    const observeElements = () => {
+      // 只观察头部和标题元素
+      if (pageTitle.value) observer.observe(pageTitle.value);
+      if (pageSubtitle.value) observer.observe(pageSubtitle.value);
+      if (selectorTitle.value) observer.observe(selectorTitle.value);
+
+      // 手动检查已经在视窗内的元素
+      setTimeout(() => {
+        const elements = [
+          pageTitle.value,
+          pageSubtitle.value,
+          selectorTitle.value,
+        ].filter(Boolean);
+        elements.forEach((element) => {
+          const rect = element.getBoundingClientRect();
+          const isVisible =
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <=
+              (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <=
+              (window.innerWidth || document.documentElement.clientWidth);
+
+          if (isVisible && !element.classList.contains("animate-visible")) {
+            // 强制触发动画
+            if (element === pageTitle.value) {
+              setTimeout(() => element.classList.add("animate-visible"), 100);
+            } else if (element === pageSubtitle.value) {
+              setTimeout(() => element.classList.add("animate-visible"), 200);
+            } else if (element === selectorTitle.value) {
+              setTimeout(() => element.classList.add("animate-visible"), 100);
+            }
+          }
+        });
+      }, 300);
+    };
+
+    onMounted(() => {
+      createObserver();
+      // 延迟一点观察，确保DOM完全渲染
+      setTimeout(() => {
+        observeElements();
+      }, 100);
+
+      // 应急方案：如果5秒后还有元素没有显示，强制显示所有元素
+      setTimeout(() => {
+        const elements = [
+          pageTitle.value,
+          pageSubtitle.value,
+          selectorTitle.value,
+        ].filter(Boolean);
+        elements.forEach((element) => {
+          if (!element.classList.contains("animate-visible")) {
+            element.classList.add("animate-visible");
+          }
+        });
+      }, 5000);
+    });
+
+    onUnmounted(() => {
+      if (observer) {
+        observer.disconnect();
+      }
     });
 
     // 选择场景
@@ -175,92 +235,66 @@ export default {
       selectedAlgorithm.value = null;
     };
 
-    // 进入场景详情页
-    const enterScenario = (scenarioId) => {
-      router.push(`/scenarios/${scenarioId}`);
+    // 场景ID到路由路径的映射
+    const scenarioRouteMap = {
+      "ai-for-ran": "/scenarios/ai-for-ran",
+      "ran-for-ai": "/scenarios/ran-for-ai",
+      "digital-twin": "/scenarios/digital-twin",
+      "data-asset": "/scenarios/data-asset",
     };
 
-    // 获取场景对应的数据集
-    const getScenarioDatasets = (scenarioId) => {
-      // 模拟数据，实际应该从API获取
-      const datasetsMap = {
-        "ai-for-ran": [
-          { id: "ping-pong", name: "乒乓切换数据集" },
-          { id: "load-balance", name: "负载均衡数据集" },
-          { id: "coverage", name: "覆盖优化数据集" },
-        ],
-        "ran-for-ai": [
-          { id: "network-data", name: "网络性能数据集" },
-          { id: "user-behavior", name: "用户行为数据集" },
-        ],
-        "digital-twin": [
-          { id: "network-topology", name: "网络拓扑数据集" },
-          { id: "traffic-pattern", name: "流量模式数据集" },
-        ],
-        "data-asset": [
-          { id: "asset-inventory", name: "资产清单数据集" },
-          { id: "value-assessment", name: "价值评估数据集" },
-        ],
-      };
-      return datasetsMap[scenarioId] || [];
-    };
-
-    // 获取场景对应的算法
-    const getScenarioAlgorithms = (scenarioId) => {
-      // 模拟数据，实际应该从API获取
-      const algorithmsMap = {
-        "ai-for-ran": [
-          { id: "ml-optimization", name: "机器学习优化算法" },
-          { id: "deep-learning", name: "深度学习算法" },
-          { id: "reinforcement", name: "强化学习算法" },
-        ],
-        "ran-for-ai": [
-          { id: "feature-extraction", name: "特征提取算法" },
-          { id: "pattern-recognition", name: "模式识别算法" },
-        ],
-        "digital-twin": [
-          { id: "simulation", name: "仿真建模算法" },
-          { id: "prediction", name: "预测算法" },
-        ],
-        "data-asset": [
-          { id: "valuation", name: "数据估值算法" },
-          { id: "classification", name: "资产分类算法" },
-        ],
-      };
-      return algorithmsMap[scenarioId] || [];
-    };
-
-    // 开始实验
-    const startExperiment = () => {
-      if (!selectedDataset.value || !selectedAlgorithm.value) {
-        ElMessage.warning("请先选择数据集和算法");
+    // 处理按钮点击 - 直接跳转到对应页面
+    const handleCardAction = (scenario) => {
+      if (scenario.status === "coming-soon") {
+        ElMessage.info("该场景即将推出，敬请期待");
         return;
       }
+      // 直接调用路由跳转
+      enterScenario(scenario.id);
+    };
 
-      ElMessage.success("实验已开始，正在跳转到实验环境...");
-      // 这里可以跳转到具体的实验页面
-      setTimeout(() => {
-        enterScenario(selectedScenario.value);
-      }, 1000);
+    // 进入场景详情页
+    const enterScenario = (scenarioId) => {
+      console.log("准备跳转到场景:", scenarioId); // 调试日志
+
+      const routePath = scenarioRouteMap[scenarioId];
+      if (routePath) {
+        console.log("跳转路径:", routePath); // 调试日志
+        router.push(routePath);
+      } else {
+        console.log("使用默认路径:", `/scenarios/${scenarioId}`); // 调试日志
+        // 如果没有找到对应的路由，回退到原来的逻辑
+        router.push(`/scenarios/${scenarioId}`);
+      }
     };
 
     return {
       appStore,
       selectedScenario,
-      selectedScenarioData,
-      selectedDataset,
-      selectedAlgorithm,
       selectScenario,
       enterScenario,
-      getScenarioDatasets,
-      getScenarioAlgorithms,
-      startExperiment,
+      handleCardAction,
+      pageTitle,
+      pageSubtitle,
+      selectorTitle,
     };
   },
 };
 </script>
 
 <style scoped>
+/* 动画相关样式 - 只针对头部和标题 */
+.animate-fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-fade-up.animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .scenarios-page {
   min-height: 100vh;
   background: #f5f7fa;
@@ -268,32 +302,91 @@ export default {
 
 /* 页面头部 */
 .page-header {
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
-  color: white;
-  padding: 60px 0;
-  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: #d9d9d9;
+  background-image: url("../assets/scenarios/bg.png");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    270deg,
+    rgba(226, 239, 255, 0) 43.08%,
+    #e2efff 77.76%
+  );
+  z-index: 1;
 }
 
 .header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.header-content {
+  position: absolute;
+  width: 640px;
+  height: 100px;
+  left: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .page-title {
+  width: 200px;
+  height: 56px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 700;
   font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 16px;
+  line-height: 56px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #263fff 0%, #00e5e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
 }
 
 .page-subtitle {
-  font-size: 18px;
-  opacity: 0.9;
+  width: 640px;
+  height: 28px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  color: #202939;
+  margin: 0;
 }
 
 /* 场景选择器 */
 .scenario-selector {
   padding: 60px 0;
+  background: #f5f8fb;
+  position: relative;
 }
 
 .selector-container {
@@ -311,19 +404,75 @@ export default {
 
 .scenarios-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .scenario-card {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  transition: all 0.3s ease;
   position: relative;
-  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px;
+  gap: 10px;
+  isolation: isolate;
+  width: 100%;
+  max-width: 402px;
+  height: 440px;
+  background: #e3e8ef;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.scenario-card::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  right: -20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 0;
+}
+
+/* 可点击卡片的图片位置 - 调整以避免与内容重叠 */
+.scenario-card:not(.coming-soon)::before {
+  top: 160px;
+  right: -24px;
+}
+
+/* 即将推出卡片的图片位置 */
+.scenario-card.coming-soon::before {
+  top: 160px;
+  right: -24px;
+}
+
+/* 为不同场景添加特定的背景图片 */
+.scenario-card:nth-child(1)::before {
+  background-image: url("../assets/scenarios/scene1.png");
+}
+
+.scenario-card:nth-child(2)::before {
+  background-image: url("../assets/scenarios/scene2.png");
+}
+
+.scenario-card:nth-child(3)::before {
+  background-image: url("../assets/scenarios/scene3.png");
+}
+
+.scenario-card:nth-child(4)::before {
+  background-image: url("../assets/scenarios/scene4.png");
+}
+
+.scenario-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .scenario-card:hover {
@@ -333,169 +482,372 @@ export default {
 
 .scenario-card.active {
   border-color: var(--primary-color);
-  transform: translateY(-4px);
+  transform: translateY(-20px);
 }
 
-.scenario-card.coming-soon {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.scenario-card.coming-soon:hover {
-  transform: none;
-}
-
-.card-header {
+/* 即将推出徽章 */
+.coming-soon-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 16px;
+  gap: 10px;
+  width: 88px;
+  height: 32px;
+  background: #9aa4b2;
+  border-radius: 0px 16px;
+  z-index: 1;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+/* 正常状态的卡片内容 */
+.scenario-card:not(.coming-soon) .card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 40px;
+  width: 354px;
+  height: 300px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+  z-index: 0; /* 降低层级，避免遮挡按钮 */
+}
+
+/* 即将推出状态的卡片内容 */
+.scenario-card.coming-soon .card-content {
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
+  padding: 0px;
+  gap: 40px;
+  width: 354px;
+  height: 264px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  z-index: 0; /* 降低层级，避免遮挡按钮 */
 }
 
-.scenario-icon {
-  font-size: 48px;
-  color: var(--primary-color);
+/* 正常状态的信息区域 */
+.scenario-card:not(.coming-soon) .scenario-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 16px;
+  width: 233px;
+  height: 80px;
 }
 
-.coming-soon-badge {
-  background: var(--warning-color);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
+/* 即将推出状态的信息区域 */
+.scenario-card.coming-soon .scenario-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 16px;
+  width: 354px;
+  height: 104px;
 }
 
-.card-content {
-  margin-bottom: 24px;
+.scenario-name-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  width: 144px;
+  height: 64px;
 }
 
-.scenario-name {
+/* 正常状态的标题 */
+.scenario-card:not(.coming-soon) .scenario-name {
+  width: 144px;
+  height: 64px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 700;
   font-size: 24px;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-  font-weight: bold;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  color: #202939;
+  margin: 0;
 }
 
-.scenario-title {
+/* 即将推出状态的标题 */
+.scenario-card.coming-soon .scenario-name {
+  width: 145px;
+  height: 64px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  color: #697586;
+  margin: 0;
+}
+
+/* 正常状态的副标题 */
+.scenario-card:not(.coming-soon) .scenario-title {
+  width: 233px;
+  height: 24px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
   font-size: 18px;
-  color: var(--primary-color);
-  margin-bottom: 12px;
+  line-height: 24px;
+  color: #697586;
+  margin: 0;
 }
 
-.scenario-desc {
-  color: var(--text-regular);
-  line-height: 1.6;
-  margin-bottom: 16px;
+/* 即将推出状态的副标题 */
+.scenario-card.coming-soon .scenario-title {
+  width: 251px;
+  height: 24px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  color: #697586;
+  margin: 0;
 }
 
 .scenario-cases {
-  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 8px;
+  width: 228px;
+  height: 64px;
 }
 
 .cases-label {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
+  width: 228px;
+  height: 28px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: #202939;
+  margin: 0;
 }
 
 .cases-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
   gap: 8px;
+  width: 222px;
+  height: 28px;
 }
 
 .case-tag {
-  margin: 0;
-}
-
-.card-actions {
-  text-align: center;
-}
-
-/* 场景详情 */
-.scenario-detail {
-  background: white;
-  padding: 60px 0;
-  margin-top: 40px;
-}
-
-.detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.detail-header {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 32px;
-  margin-bottom: 48px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 4px 8px;
+  gap: 4px;
+  background: rgba(38, 63, 255, 0.1);
+  border-radius: 6px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #263fff;
+  height: 28px;
 }
 
-.detail-icon {
-  font-size: 72px;
-  color: var(--primary-color);
-}
-
-.detail-name {
-  font-size: 36px;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
-
-.detail-title {
-  font-size: 24px;
-  color: var(--primary-color);
-  margin-bottom: 12px;
-}
-
-.detail-description {
-  font-size: 16px;
-  color: var(--text-regular);
-  line-height: 1.6;
-}
-
-/* 场景工具 */
-.scenario-tools {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 32px;
-  align-items: end;
-}
-
-.tools-section {
+/* 卡片动作按钮样式 */
+.card-action-button {
+  position: absolute;
+  left: 25px;
+  bottom: 120px;
+  z-index: 2; /* 提高层级，确保在内容之上 */
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 24px;
+  gap: 10px;
+  width: 120px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: inherit;
 }
 
-.tools-title {
+/* 主要按钮样式 */
+.card-action-button.primary {
+  background: #263fff;
+  pointer-events: auto; /* 确保按钮可以接收鼠标事件 */
+}
+
+.card-action-button.primary:hover {
+  background: #1a2ecc;
+}
+
+.card-action-button.primary:disabled {
+  background: #263fff;
+  cursor: not-allowed;
+}
+
+/* 禁用按钮样式 */
+.card-action-button.disabled {
+  background: transparent;
+  border: 1px solid #697586;
+  cursor: not-allowed;
+  pointer-events: auto; /* 确保禁用按钮也能接收事件（用于显示提示） */
+}
+
+.card-action-button.disabled:disabled {
+  opacity: 1;
+}
+
+.button-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  width: 92px;
+  height: 20px;
+}
+
+.card-action-button.primary span {
+  width: 64px;
+  height: 20px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
   font-size: 16px;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+}
+
+.card-action-button.disabled span {
+  width: 64px;
+  height: 20px;
+  font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  color: #697586;
+}
+
+/* 箭头图标 - 使用Unicode符号 */
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.arrow-icon::before {
+  content: "↗";
+  color: #ffffff;
+}
+
+.arrow-icon.disabled::before {
+  color: #697586;
+}
+
+.ml-2 {
+  margin-left: 8px;
 }
 
 /* 响应式设计 */
+@media (max-width: 1200px) {
+  .scenarios-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
 @media (max-width: 768px) {
+  .header-content {
+    left: 24px;
+    width: calc(100% - 48px);
+  }
+
   .page-title {
     font-size: 32px;
+    width: auto;
+  }
+
+  .page-subtitle {
+    width: 100%;
+    font-size: 16px;
   }
 
   .scenarios-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .detail-header {
-    flex-direction: column;
-    text-align: center;
+  .scenario-card {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
   }
 
-  .scenario-tools {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .scenario-card:not(.coming-soon)::before {
+    width: 200px;
+    height: 200px;
+    right: -30px;
+    top: 180px;
+  }
+
+  .scenario-card.coming-soon::before {
+    width: 200px;
+    height: 200px;
+    right: -30px;
+    bottom: -30px;
+  }
+
+  .card-action-button {
+    left: 20px;
+    bottom: 30px;
   }
 }
 </style>
