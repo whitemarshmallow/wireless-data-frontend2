@@ -138,7 +138,6 @@ export const useAppStore = defineStore("app", {
       {
         id: "ai-for-ran",
         name: "AI for RAN",
-        title: "网络智能优化",
         description: "利用AI技术优化无线网络性能",
         icon: "Cpu",
         cases: ["乒乓切换优化", "多案例链式编排"],
@@ -146,7 +145,6 @@ export const useAppStore = defineStore("app", {
       {
         id: "ran-for-ai",
         name: "RAN for AI",
-        title: "RAN辅助AI",
         description: "网络数据辅助AI模型训练和优化",
         icon: "DataBoard",
         status: "coming-soon",
@@ -154,7 +152,6 @@ export const useAppStore = defineStore("app", {
       {
         id: "digital-twin",
         name: "数字孪生",
-        title: "网络数字孪生",
         description: "构建网络的数字化镜像",
         icon: "Monitor",
         status: "coming-soon",
@@ -162,7 +159,6 @@ export const useAppStore = defineStore("app", {
       {
         id: "data-asset",
         name: "数据资产",
-        title: "数据资产管理",
         description: "无线数据的资产化管理",
         icon: "Coin",
         status: "coming-soon",

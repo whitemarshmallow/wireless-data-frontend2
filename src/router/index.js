@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
-import Capabilities from "@/views/Capabilities.vue";
 import Scenarios from "@/views/Scenarios.vue";
 
 const routes = [
@@ -13,23 +12,29 @@ const routes = [
     },
   },
   {
-    path: "/capabilities",
-    name: "Capabilities",
-    component: Capabilities,
+    path: "/upload",
+    name: "DataUpload",
+    component: () => import("@/components/data/upload/DataUpload.vue"),
     meta: {
-      title: "五大能力 - Wi-Dop无线数据一站式平台",
+      title: "数据上传",
     },
   },
   {
     path: "/viavi-download",
     name: "ViaviDownload",
     component: () => import("@/components/data/download/ViaviDataDownload.vue"),
+    meta: {
+      title: "仿真数据下载",
+    },
   },
   {
     path: "/livenet-download",
     name: "LiveNetDownload",
     component: () =>
       import("@/components/data/download/LiveNetDataDownload.vue"),
+    meta: {
+      title: "现网数据下载",
+    },
   },
   {
     path: "/scenarios",
@@ -74,14 +79,25 @@ const routes = [
   {
     path: "/task-flow-editor",
     name: "TaskFlowEditor",
-    component: () => import("@/views/TaskFlowEditor.vue"),
+    component: () =>
+      import("@/views/applicationScenario/AIForRAN/TaskFlowEditor.vue"),
     meta: { title: "任务流编辑器" },
   },
   {
     path: "/pingpong-switch",
     name: "PingpongSwitch",
-    component: () => import("@/views/PingpongSwitch.vue"),
+    component: () =>
+      import("@/views/applicationScenario/AIForRAN/PingpongSwitch.vue"),
     meta: { title: "乒乓切换优化" },
+  },
+  {
+    path: "/network-optimization-agent",
+    name: "NetworkOptimizationAgent",
+    component: () =>
+      import(
+        "@/views/applicationScenario/AIForRAN/NetworkOptimizationAgent.vue"
+      ),
+    meta: { title: "网优助手" },
   },
 ];
 

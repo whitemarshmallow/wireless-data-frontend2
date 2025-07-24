@@ -37,6 +37,14 @@
             </router-linkc>
             <div class="dropdown-menu">
               <router-link
+                to="/upload"
+                class="dropdown-item"
+                :class="{ 'is-active': activeIndex === '/upload' }"
+              >
+                <el-icon><Setting /></el-icon>
+                <span>数据上传</span>
+              </router-link>
+              <router-link
                 to="/viavi-download"
                 class="dropdown-item"
                 :class="{ 'is-active': activeIndex === '/viavi-download' }"

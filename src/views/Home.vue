@@ -690,9 +690,7 @@ export default {
   overflow-x: hidden;
 }
 
-/* ========================= 增强动画样式 ========================= */
-
-/* 基础动画类 - 调整速度 */
+/* 基础动画类 */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(60px);
@@ -1027,75 +1025,146 @@ export default {
   filter: blur(0);
 }
 
-/* ========================= 原有样式保持不变 ========================= */
-
-/* Hero Section - 按照Figma精确尺寸，增加高度 */
+/* Hero Section - 响应式版本 */
 .hero-section {
   position: relative;
   width: 100%;
-  max-width: 1440px;
-  height: 100vh; /* 使用100vh确保占满整个视口 */
-  min-height: 600px; /* 最小高度 */
+  height: 100vh;
+  min-height: 600px;
   margin: 0;
   overflow: hidden;
 }
 
 .hero-background-container {
   position: absolute;
-  width: 1440px;
+  width: 100%;
   height: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   top: 0;
+  min-width: 1440px; /* 确保最小宽度 */
 }
 
-/* 背景矩形 */
+/* 背景矩形 - 响应式适配 */
 .hero-background-rect {
   position: absolute;
-  width: 1440px;
+  width: 100%;
   height: 100%;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   background: #d9d9d9;
+  min-width: 1440px; /* 保持最小宽度 */
 }
 
-/* 背景图片 */
+/* 背景图片 - 响应式适配 */
 .hero-background-image {
   position: absolute;
-  width: 1422px; /* 放大宽度 */
-  height: 800px; /* 等比例放大高度 */
-  left: 50px; /* 调整左边距 */
+  width: calc(100% - 18px); /* 相对宽度，保持比例 */
+  height: 800px;
+  right: 0; /* 改为右对齐 */
+  top: 0;
   background: url("../assets/home/main.png");
   background-size: contain;
-  background-position: center;
+  background-position: right center; /* 右侧居中对齐 */
   background-repeat: no-repeat;
+  min-width: 1400px; /* 最小宽度确保图片完整显示 */
 }
 
-/* 渐变覆盖层 */
+/* 渐变覆盖层 - 响应式适配 */
 .hero-gradient-overlay {
   position: absolute;
-  width: 1440px;
+  width: 100%;
   height: 100%;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   background: linear-gradient(
     270deg,
     rgba(228, 236, 250, 0) 40.69%,
     #e4ecfa 74.01%
   );
+  min-width: 1440px; /* 保持最小宽度 */
 }
 
 .hero-container {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 120px 24px; /* 增加上下padding */
+  padding: 120px 24px;
   height: 100%;
   z-index: 10;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  transform: translateY(-50px); /* 整体向上移动50px */
+  transform: translateY(-50px);
+}
+
+/* 响应式断点优化 */
+@media (max-width: 1440px) {
+  .hero-background-container,
+  .hero-background-rect,
+  .hero-gradient-overlay {
+    min-width: 100vw; /* 使用视口宽度 */
+  }
+
+  .hero-background-image {
+    min-width: calc(100vw - 18px);
+    background-position: right center;
+  }
+}
+
+@media (max-width: 1280px) {
+  .hero-background-image {
+    width: 100%;
+    min-width: 100%;
+    background-size: cover; /* 改为cover确保填满 */
+    background-position: center right;
+  }
+
+  .hero-gradient-overlay {
+    background: linear-gradient(
+      270deg,
+      rgba(228, 236, 250, 0) 30%,
+      #e4ecfa 65%
+    ); /* 调整渐变范围 */
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    height: 100vh;
+    min-height: 500px;
+  }
+
+  .hero-container {
+    padding: 80px 24px;
+    transform: translateY(-30px);
+  }
+
+  .hero-background-image {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+  }
+
+  .hero-gradient-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(228, 236, 250, 0) 20%,
+      rgba(228, 236, 250, 0.7) 60%,
+      #e4ecfa 90%
+    ); /* 移动端改为从上到下的渐变 */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-container {
+    transform: translateY(-20px);
+    padding: 60px 16px;
+  }
+
+  .hero-background-image {
+    height: 100vh;
+    background-size: cover;
+  }
 }
 
 /* 向下滚动按钮 */
@@ -2170,26 +2239,6 @@ export default {
 
 /* 响应式设计 */
 @media (max-width: 1280px) {
-  .hero-section {
-    max-width: 100%;
-  }
-
-  .hero-background-container {
-    width: 100%;
-    left: 0;
-    transform: none;
-  }
-
-  .hero-background-rect,
-  .hero-gradient-overlay {
-    width: 100%;
-  }
-
-  .hero-background-image {
-    width: 80%;
-    left: 20%;
-  }
-
   .features-wrapper {
     width: calc(100% - 40px);
     max-width: 1200px;
@@ -2221,20 +2270,6 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .hero-section {
-    height: 100vh;
-    min-height: 500px;
-  }
-
-  .hero-container {
-    padding: 80px 24px;
-    transform: translateY(-30px); /* 移动端减少移动距离 */
-  }
-
-  .hero-title {
-    font-size: 32px;
-  }
-
   .scroll-down-btn {
     bottom: 70px; /* 移动端调整：原来40px + 30px */
     width: 40px;
@@ -2314,16 +2349,6 @@ export default {
 }
 
 @media (max-width: 480px) {
-  .hero-background-image {
-    width: 100%;
-    left: 0;
-    height: 450px; /* 调整小屏幕高度 */
-  }
-
-  .hero-container {
-    transform: translateY(-20px); /* 小屏幕减少移动距离 */
-  }
-
   .scroll-down-btn {
     bottom: 50px; /* 小屏幕调整：原来30px + 20px */
     width: 36px;

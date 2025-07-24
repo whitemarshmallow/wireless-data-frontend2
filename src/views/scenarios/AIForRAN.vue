@@ -91,11 +91,11 @@ export default {
         id: "handover",
         name: "乒乓切换优化",
         description:
-          "利用机器学习算法优化小区间的乒乓切换问题，减少不必要的切换次数",
+          "利用机器学习算法优化小区间的乒乓切换问题，减少不必要的切换次数。",
         icon: "Connection",
         improvement: "↑ 30%",
         complexity: 3,
-        route: "/pingpong-switch", // 对应的路由
+        route: "/pingpong-switch",
       },
       {
         id: "taskflow",
@@ -105,7 +105,17 @@ export default {
         icon: "Connection",
         improvement: "↑ 50%",
         complexity: 5,
-        route: "/task-flow-editor", // 对应的路由
+        route: "/task-flow-editor",
+      },
+      {
+        id: "networkagent",
+        name: "网优智能助手",
+        description:
+          "AI驱动的网络优化工具，支持KPI分析、参数调优与Viavi仿真，生成专业优化方案。",
+        icon: "Connection",
+        improvement: "↑ 50%",
+        complexity: 5,
+        route: "/network-optimization-agent",
       },
     ]);
 

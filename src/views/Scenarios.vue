@@ -41,7 +41,6 @@
               <div class="scenario-info">
                 <div class="scenario-name-container">
                   <h3 class="scenario-name">{{ scenario.name }}</h3>
-                  <h3 class="scenario-name">{{ scenario.title }}</h3>
                 </div>
                 <h4 class="scenario-title">{{ scenario.description }}</h4>
               </div>
@@ -571,19 +570,19 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 0px;
-  width: 144px;
+  width: 160px;
   height: 64px;
 }
 
 /* 正常状态的标题 */
 .scenario-card:not(.coming-soon) .scenario-name {
-  width: 144px;
+  width: 160px;
   height: 64px;
   font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 30px;
   line-height: 32px;
   display: flex;
   align-items: center;
@@ -593,13 +592,13 @@ export default {
 
 /* 即将推出状态的标题 */
 .scenario-card.coming-soon .scenario-name {
-  width: 145px;
+  width: 160px;
   height: 64px;
   font-family: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 30px;
   line-height: 32px;
   display: flex;
   align-items: center;
