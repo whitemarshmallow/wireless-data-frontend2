@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 主标题 -->
-    <h1 class="app-title">🛰️ 网优智能助手（Viavi 仿真 & 优化）</h1>
+    <h1 class="app-title">🛰️ 网优智能助手</h1>
 
     <p class="app-subtitle">用 AI 帮你定位问题、生成优化思路与仿真脚本！</p>
 
