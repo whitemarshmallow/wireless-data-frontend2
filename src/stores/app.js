@@ -4,6 +4,8 @@ export const useAppStore = defineStore("app", {
   state: () => ({
     // 当前选中的场景
     currentScenario: null,
+    // 当前选中的无线数据
+    currentWireless: null,
 
     // 平台核心信息
     platformInfo: {
@@ -134,6 +136,8 @@ export const useAppStore = defineStore("app", {
         color: "#F56C6C",
       },
     ],
+
+    // 应用场景数据
     scenarios: [
       {
         id: "ai-for-ran",
@@ -164,12 +168,49 @@ export const useAppStore = defineStore("app", {
         status: "coming-soon",
       },
     ],
+
+    // 无线数据类型定义
+    wireless: [
+      {
+        id: "ai-for-ran",
+        name: "无线网络编排数据集",
+        description:
+          "涵盖网络资源编排、服务调度、负载均衡等智能决策数据，支持网络自动化和智能化研究。",
+        icon: "Cpu",
+      },
+      {
+        id: "ran-for-ai",
+        name: "无线接入网智能数据集",
+        description:
+          "包含 RAN 网络性能优化、资源调度、故障诊断等场景数据，支持网络智能化算法研发和验证。",
+        icon: "DataBoard",
+      },
+      {
+        id: "digital-twin",
+        name: "无线网络数字孪生数据集",
+        description:
+          "全面的网络数字孪生数据，包括网络拓扑、设备状态、业务流量等多维度信息，支持网络仿真和预测性分析。",
+        icon: "Monitor",
+      },
+      {
+        id: "data-asset",
+        name: "无线网络数据资产集",
+        description:
+          "标准化的网络数据资产，包含网络配置、性能指标、用户行为等多维数据，支持数据治理和价值挖掘。",
+        icon: "Coin",
+      },
+    ],
   }),
 
   getters: {
     // 获取可用的场景（排除即将推出的）
     availableScenarios: (state) => {
       return state.scenarios.filter((scenario) => !scenario.status);
+    },
+
+    // 获取所有无线数据（全部可用）
+    availableWireless: (state) => {
+      return state.wireless;
     },
 
     // 根据ID获取能力信息
@@ -182,10 +223,28 @@ export const useAppStore = defineStore("app", {
       return (id) => state.scenarios.find((scenario) => scenario.id === id);
     },
 
+    // 根据ID获取无线数据信息
+    getWirelessById: (state) => {
+      return (id) => state.wireless.find((wireless) => wireless.id === id);
+    },
+
     // 根据ID获取应用场景信息
     getApplicationScenarioById: (state) => {
       return (id) =>
         state.applicationScenarios.find((scenario) => scenario.id === id);
+    },
+
+    // 获取当前选中的无线数据详情
+    getCurrentWireless: (state) => {
+      if (!state.currentWireless) return null;
+      return state.wireless.find(
+        (wireless) => wireless.id === state.currentWireless
+      );
+    },
+
+    // 获取无线数据的总数
+    getWirelessCount: (state) => {
+      return state.wireless.length;
     },
   },
 
@@ -198,6 +257,37 @@ export const useAppStore = defineStore("app", {
     // 清除当前场景
     clearCurrentScenario() {
       this.currentScenario = null;
+    },
+
+    // 设置当前无线数据
+    setCurrentWireless(wirelessId) {
+      this.currentWireless = wirelessId;
+    },
+
+    // 清除当前无线数据
+    clearCurrentWireless() {
+      this.currentWireless = null;
+    },
+
+    // 添加新的无线数据类型
+    addWireless(wirelessData) {
+      this.wireless.push(wirelessData);
+    },
+
+    // 更新无线数据类型
+    updateWireless(id, updatedData) {
+      const index = this.wireless.findIndex((wireless) => wireless.id === id);
+      if (index !== -1) {
+        this.wireless[index] = { ...this.wireless[index], ...updatedData };
+      }
+    },
+
+    // 删除无线数据类型
+    removeWireless(id) {
+      const index = this.wireless.findIndex((wireless) => wireless.id === id);
+      if (index !== -1) {
+        this.wireless.splice(index, 1);
+      }
     },
   },
 });

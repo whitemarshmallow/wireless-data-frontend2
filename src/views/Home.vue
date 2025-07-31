@@ -21,7 +21,7 @@
             >
               <h1 class="hero-title animate-slide-right">无线数据一站式平台</h1>
               <p class="hero-subtitle animate-slide-right-delay">
-                提供高质量数据集成、工具库和算法模型，助力无线AI领域快速开发与创新
+                提供高质量数据集、工具库和算法模型，助力无线AI领域快速开发与创新
               </p>
             </div>
 
@@ -33,7 +33,7 @@
                   开放可信的无线数据存储与发布研究平台
                 </h3>
                 <p class="animate-text-fade-delay">
-                  向全球科研人员、团队、专业公司、高校及运营商等相关主体提供无线数据服务
+                  面向学术界和工业界科研人员、团队、专业公司、高校及运营商等相关主体提供无线数据服务
                 </p>
               </div>
             </div>

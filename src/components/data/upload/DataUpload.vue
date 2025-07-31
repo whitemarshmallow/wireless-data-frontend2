@@ -5,13 +5,13 @@
     <div class="page-overlay"></div>
 
     <!-- 页面标题 -->
-    <h1 class="page-title">数据上传平台</h1>
+    <h1 class="page-title">数据格式转换</h1>
 
     <!-- 页面介绍 -->
     <div class="intro-section translucent-container">
       <h2 class="section-title">功能介绍</h2>
       <p class="description-text">
-        数据上传平台支持多种格式数据的上传与转换，为无线网络数据处理提供便捷入口。
+        该功能支持多种格式数据的上传与转换，为无线网络数据处理提供便捷入口。
         您可以通过文件上传或直接粘贴的方式提交数据，系统将自动进行处理并提供标准格式的输出结果。
       </p>
     </div>

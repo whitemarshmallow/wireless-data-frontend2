@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
 import Scenarios from "@/views/Scenarios.vue";
+import WirelessData from "@/views/WirelessData.vue"; // 修正路径
 
 const routes = [
   {
@@ -10,6 +11,19 @@ const routes = [
     meta: {
       title: "首页 - Wi-Dop无线数据一站式平台",
     },
+  },
+  {
+    path: "/wireless-data",
+    name: "WirelessData",
+    component: WirelessData,
+    meta: {
+      title: "无线数据仓库",
+    },
+  },
+  {
+    path: "/wireless/:wirelessType/datasets",
+    name: "DatasetDetail",
+    component: () => import("@/views/wirelessDataWarehouse/DatasetDetail.vue"), // 路径已正确
   },
   {
     path: "/upload",

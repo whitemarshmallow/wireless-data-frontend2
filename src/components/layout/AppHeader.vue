@@ -28,13 +28,14 @@
           </router-link>
           <!-- 无线数据仓库 -->
           <div class="menu-item-wrapper dropdown-wrapper">
-            <router-linkc
+            <router-link
+              to="/wireless-data"
               class="menu-item"
-              :class="{ 'is-active': activeIndex === '/data-warehouse' }"
+              :class="{ 'is-active': activeIndex === '/wireless-data' }"
             >
               <el-icon><DataBoard /></el-icon>
               <span>无线数据仓库</span>
-            </router-linkc>
+            </router-link>
             <div class="dropdown-menu">
               <router-link
                 to="/upload"
@@ -42,7 +43,7 @@
                 :class="{ 'is-active': activeIndex === '/upload' }"
               >
                 <el-icon><Setting /></el-icon>
-                <span>数据上传</span>
+                <span>数据格式转换</span>
               </router-link>
               <router-link
                 to="/viavi-download"
