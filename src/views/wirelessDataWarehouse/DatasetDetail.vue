@@ -395,23 +395,12 @@ export default {
 
     // 开始下载（合并后的逻辑）
     const startDownload = async () => {
-      const getMimeType = (extension) => {
-        const mimeTypes = {
-          txt: "text/plain",
-          csv: "text/csv",
-          json: "application/json",
-          xml: "application/xml",
-          xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          zip: "application/zip",
-        };
-        return mimeTypes[extension] || "text/plain";
-      };
-
       if (!selectedDataset.value) {
         console.error("selectedDataset.value 为空:", selectedDataset.value);
         ElMessage.error("未选择数据集，请重新点击下载");
         return;
       }
+
       // 先保存数据集信息
       const currentDataset = selectedDataset.value;
       const currentUseToolchain = useToolchain.value;
@@ -437,7 +426,7 @@ export default {
           currentStep.value = `正在使用${
             availableTools.value.find((t) => t.id === currentSelectedTool)?.name
           }处理数据...`;
-          progressPercent.value = 50; // 显示处理中
+          progressPercent.value = 50;
         }
 
         const response = await fetch(getApiUrl("/api/dataset/download", null), {
@@ -447,59 +436,46 @@ export default {
         });
 
         if (!response.ok) {
-          throw new Error("下载失败");
+          throw new Error(
+            `下载失败: ${response.status} ${response.statusText}`
+          );
         }
 
-        const contentType = response.headers.get("content-type");
+        // 直接处理文件流响应
+        const blob = await response.blob();
 
-        if (contentType && contentType.includes("application/json")) {
-          const result = await response.json();
-          console.log("后端返回JSON:", result);
+        // 尝试从响应头获取文件名
+        const contentDisposition = response.headers.get("content-disposition");
+        let filename =
+          currentDataset.name + (currentUseToolchain ? "_processed" : "");
 
-          if (result.code === 200) {
-            const dataContent = result.data || result.message;
-
-            // 根据上传时的格式确定文件类型和扩展名
-            const originalFormat = currentDataset.format || "TXT";
-            const fileExtension = originalFormat.toLowerCase();
-            const mimeType = getMimeType(fileExtension);
-
-            const blob = new Blob([dataContent], { type: mimeType });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            // 使用原始格式作为文件扩展名
-            a.download =
-              currentDataset.name +
-              (currentUseToolchain ? "_processed" : "") +
-              "." +
-              fileExtension;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
+        if (contentDisposition) {
+          // 解析 Content-Disposition 头中的文件名
+          const filenameMatch = contentDisposition.match(
+            /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+          );
+          if (filenameMatch && filenameMatch[1]) {
+            filename = filenameMatch[1].replace(/['"]/g, "");
           }
         } else {
-          // 二进制文件的情况
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-
-          // 同样根据原始格式确定扩展名
-          const originalFormat = currentDataset.format || "zip";
-          const fileExtension = originalFormat.toLowerCase();
-          a.download =
-            currentDataset.name +
-            (currentUseToolchain ? "_processed" : "") +
-            "." +
-            fileExtension;
-
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          window.URL.revokeObjectURL(url);
+          // 如果响应头中没有文件名，根据原始格式确定扩展名
+          const originalFormat = currentDataset.format || "txt";
+          // 处理多格式的情况，取第一个格式
+          const firstFormat = originalFormat.split(",")[0].trim();
+          const fileExtension = firstFormat.toLowerCase();
+          filename = filename + "." + fileExtension;
         }
+
+        // 创建下载链接并触发下载
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
 
         // 关闭进度对话框（如果有）
         if (currentUseToolchain) {
@@ -515,9 +491,13 @@ export default {
           }下载成功`
         );
       } catch (error) {
+        console.error("下载错误:", error);
+
+        // 关闭进度对话框（如果有）
         if (currentUseToolchain) {
           showProgressDialog.value = false;
         }
+
         ElMessage.error(`下载失败: ${error.message}`);
       }
     };
