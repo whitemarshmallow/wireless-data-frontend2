@@ -1,0 +1,66 @@
+// 主题色彩变量
+$primary-color: #409eff;
+$primary-light: #79bbff;
+$primary-lighter: #a0cfff;
+$success-color: #67c23a;
+$warning-color: #e6a23c;
+$danger-color: #f56c6c;
+$info-color: #909399;
+
+// 文字颜色
+$text-primary: #303133;
+$text-regular: #606266;
+$text-secondary: #909399;
+$text-placeholder: #c0c4cc;
+
+// 边框颜色
+$border-lighter: #ebeef5;
+$border-light: #e4e7ed;
+$border-base: #dcdfe6;
+$border-dark: #d4d7de;
+
+// 填充颜色
+$fill-lighter: #f2f6fc;
+$fill-light: #e9eef3;
+$fill-base: #f0f2f5;
+$fill-dark: #ebedf0;
+
+// 背景颜色
+$bg-color: #ffffff;
+$header-bg: #1a1a1a;
+
+// 断点
+$mobile: 768px;
+$tablet: 1024px;
+$desktop: 1200px;
+
+// 间距
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// 阴影
+$shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+$shadow-base: 0 4px 20px 0 rgba(0, 0, 0, 0.08);
+$shadow-dark: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+
+// 圆角
+$border-radius-sm: 4px;
+$border-radius-base: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+
+// 字体大小
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-xxl: 24px;
+
+// 行高
+$line-height-base: 1.6;
+$line-height-sm: 1.4;
+$line-height-lg: 1.8;

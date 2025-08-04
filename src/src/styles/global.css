@@ -1,0 +1,555 @@
+/* 全局重置和基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8fbff;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+/* 新的主题色彩变量 */
+:root {
+  /* 主要颜色 - 蓝色系 */
+  --primary-color: #4a9eff;
+  --primary-light: #74b9ff;
+  --primary-lighter: #a0cfff;
+  --primary-dark: #2980b9;
+
+  /* 辅助颜色 */
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --danger-color: #ff4d4f;
+  --info-color: #1890ff;
+
+  /* 文字颜色 */
+  --text-primary: #2c3e50;
+  --text-regular: #7f8c8d;
+  --text-secondary: #95a5a6;
+  --text-placeholder: #bdc3c7;
+
+  /* 边框颜色 */
+  --border-lighter: #f8fbff;
+  --border-light: #e6f3ff;
+  --border-base: #d1ecf1;
+  --border-dark: #bee5eb;
+
+  /* 填充颜色 */
+  --fill-lighter: #f8fbff;
+  --fill-light: #e6f3ff;
+  --fill-base: #cce7ff;
+  --fill-dark: #b3daff;
+
+  /* 背景颜色 */
+  --bg-color: #ffffff;
+  --bg-secondary: #f8fbff;
+  --bg-light: #e6f3ff;
+  --header-bg: #ffffff;
+
+  /* 阴影 */
+  --shadow-light: 0 2px 12px 0 rgba(74, 158, 255, 0.1);
+  --shadow-base: 0 4px 20px 0 rgba(74, 158, 255, 0.15);
+  --shadow-dark: 0 8px 32px 0 rgba(74, 158, 255, 0.2);
+
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, #4a9eff 0%, #74b9ff 100%);
+  --gradient-light: linear-gradient(
+    135deg,
+    #e6f3ff 0%,
+    #f0f8ff 50%,
+    #ffffff 100%
+  );
+  --gradient-secondary: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+}
+
+/* 布局容器 */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 60px;
+  /* 为固定头部留出空间 */
+}
+
+/* 通用卡片样式 */
+.card {
+  background: var(--bg-color);
+  border-radius: 16px;
+  box-shadow: var(--shadow-base);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow-dark);
+  transform: translateY(-4px);
+}
+
+/* 按钮样式优化 */
+.btn-primary {
+  background: var(--gradient-primary);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* 标题样式 */
+.title-large {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.title-medium {
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.title-small {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-regular);
+  line-height: 1.6;
+}
+
+.description {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-regular);
+  line-height: 1.6;
+}
+
+/* 渐变背景工具类 */
+.gradient-bg-primary {
+  background: var(--gradient-primary);
+}
+
+.gradient-bg-light {
+  background: var(--gradient-light);
+}
+
+.gradient-bg-secondary {
+  background: var(--gradient-secondary);
+}
+
+/* 文本渐变 */
+.text-gradient-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 图标样式 */
+.icon-large {
+  font-size: 64px;
+  color: var(--primary-color);
+}
+
+.icon-medium {
+  font-size: 48px;
+  color: var(--primary-color);
+}
+
+.icon-small {
+  font-size: 32px;
+  color: var(--primary-color);
+}
+
+/* 装饰性元素 */
+.floating-element {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+/* 3D效果 */
+.element-3d {
+  transform: perspective(1000px) rotateX(10deg) rotateY(5deg);
+  box-shadow: 0 20px 40px rgba(74, 158, 255, 0.2);
+}
+
+.element-3d-hover {
+  transition: transform 0.3s ease;
+}
+
+.element-3d-hover:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(2deg) translateY(-10px);
+}
+
+/* 网格布局工具类 */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+}
+
+/* 间距工具类 */
+.spacing-xs {
+  padding: 8px;
+}
+
+.spacing-sm {
+  padding: 16px;
+}
+
+.spacing-md {
+  padding: 24px;
+}
+
+.spacing-lg {
+  padding: 32px;
+}
+
+.spacing-xl {
+  padding: 48px;
+}
+
+.margin-xs {
+  margin: 8px;
+}
+
+.margin-sm {
+  margin: 16px;
+}
+
+.margin-md {
+  margin: 24px;
+}
+
+.margin-lg {
+  margin: 32px;
+}
+
+.margin-xl {
+  margin: 48px;
+}
+
+/* 圆角工具类 */
+.rounded-sm {
+  border-radius: 8px;
+}
+
+.rounded-md {
+  border-radius: 12px;
+}
+
+.rounded-lg {
+  border-radius: 16px;
+}
+
+.rounded-xl {
+  border-radius: 20px;
+}
+
+.rounded-full {
+  border-radius: 50%;
+}
+
+/* 阴影工具类 */
+.shadow-sm {
+  box-shadow: var(--shadow-light);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-base);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-dark);
+}
+
+/* 动画工具类 */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.6s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scale-in {
+  animation: scaleIn 0.6s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 响应式工具类 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 24px;
+}
+
+/* 响应式断点 */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 960px;
+  }
+
+  .grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    max-width: 720px;
+  }
+
+  .grid-4,
+  .grid-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .title-large {
+    font-size: 36px;
+  }
+
+  .title-medium {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 540px;
+    padding: 0 16px;
+  }
+
+  .container-fluid {
+    padding: 0 16px;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-5 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .title-large {
+    font-size: 28px;
+  }
+
+  .title-medium {
+    font-size: 24px;
+  }
+
+  .title-small {
+    font-size: 20px;
+  }
+
+  .spacing-xl {
+    padding: 32px;
+  }
+
+  .spacing-lg {
+    padding: 24px;
+  }
+
+  .spacing-md {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 100%;
+    padding: 0 12px;
+  }
+
+  .container-fluid {
+    padding: 0 12px;
+  }
+
+  .title-large {
+    font-size: 24px;
+  }
+
+  .title-medium {
+    font-size: 20px;
+  }
+
+  .title-small {
+    font-size: 18px;
+  }
+
+  .spacing-xl {
+    padding: 24px;
+  }
+
+  .spacing-lg {
+    padding: 16px;
+  }
+}
+
+/* Element Plus 组件样式覆盖 */
+.el-button--primary {
+  background: var(--gradient-primary);
+  border-color: var(--primary-color);
+}
+
+.el-button--primary:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+}
+
+.el-icon {
+  color: inherit;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fill-lighter);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* 选择文本样式 */
+::selection {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+::-moz-selection {
+  background-color: var(--primary-light);
+  color: white;
+}
