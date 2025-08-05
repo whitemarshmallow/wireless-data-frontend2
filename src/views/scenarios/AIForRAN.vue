@@ -118,14 +118,14 @@ export default {
         route: "/network-optimization-agent",
       },
       {
-        id: "networkagent",
+        id: "energysaving",
         name: "智慧节能",
         description:
           "AI驱动的网络优化工具，支持KPI分析、参数调优与Viavi仿真，生成专业优化方案。",
         icon: "Connection",
         improvement: "↑ 50%",
         complexity: 5,
-        route: "/network-optimization-agent",
+        route: "/energy-saving",
       },
       {
         id: "activebeamselection",

@@ -34,5 +34,11 @@ module.exports = {
         "vue/multi-word-component-names": "off",
       },
     },
+    {
+      files: ["EnergySaving*.vue", "src/demo/EnergySaving/*.js", "src/components/charts/*.vue"],
+      rules: {
+        "prettier/prettier": "off",
+      },
+    },
   ],
 };

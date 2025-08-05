@@ -120,11 +120,44 @@ const routes = [
       title: "数据资产 - Wi-Dop平台",
     },
   },
+  {
+    path: "/task-flow-editor",
+    name: "TaskFlowEditor",
+    component: () =>
+      import("@/views/applicationScenario/AIForRAN/TaskFlowEditor.vue"),
+    meta: { title: "任务流编辑器" },
+  },
+  {
+    path: "/pingpong-switch",
+    name: "PingpongSwitch",
+    component: () =>
+      import("@/views/applicationScenario/AIForRAN/PingpongSwitch.vue"),
+    meta: { title: "乒乓切换优化" },
+  },
+  {
+    path: "/network-optimization-agent",
+    name: "NetworkOptimizationAgent",
+    component: () =>
+      import(
+        "@/views/applicationScenario/AIForRAN/NetworkOptimizationAgent.vue"
+      ),
+    meta: { title: "网优助手" },
+  },
+  {
+    path: "/energy-saving",
+    name: "EnergySaving",
+    component: () =>
+      import("@/views/applicationScenario/AIForRAN/EnergySaving.vue"),
+    meta: { title: "RAN智慧节能" },
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }; // 每次路由切换都返回顶部
+  },
 });
 
 // 路由守卫 - 设置页面标题
