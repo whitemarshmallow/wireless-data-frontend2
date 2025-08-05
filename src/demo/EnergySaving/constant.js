@@ -11,7 +11,7 @@ export default {
     // { key: 3, value: '系统自动选择' },
   ],
   EMERGY_SAVING_SWITCH: [
-    { key: 0, value: '关闭' },
     { key: 1, value: '打开' },
+    { key: 0, value: '关闭' },
   ]
 };

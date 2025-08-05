@@ -194,8 +194,8 @@ const dataFileSelected = ref(null);
 let historyDataFlag = ref(''); // 当前历史数据优劣标识
 const dataFileList = ref([
   { id: 0, name: '小区信息数据.json', size: '12kb', time: '2025-07-29 18:00:32', type: 'cell' },
-  { id: 1, name: '小区最近24小时历史运行性能数据_01.xlsx', size: '2M', time: '2025-07-29 18:04:24', type: 'history', flag: '01' }, // 优质数据
-  { id: 2, name: '小区最近24小时历史运行性能数据_02.xlsx', size: '2M', time: '2025-07-29 18:07:54', type: 'history', flag: '02' }, // 劣质数据
+  { id: 1, name: '小区最近24小时历史运行性能数据_数据工具链处理后.xlsx', size: '2M', time: '2025-07-29 18:04:24', type: 'history', flag: '01' }, // 优质数据
+  { id: 2, name: '小区最近24小时历史运行性能数据_数据工具链处理前.xlsx', size: '2M', time: '2025-07-29 18:07:54', type: 'history', flag: '02' }, // 劣质数据
 ]);
 const dataFileTableData = ref([]);
 const onLoadDataFile = () => {
@@ -422,6 +422,7 @@ defineExpose({ updateDemoCellData });
       width: 100%;
       height: 100%;
       padding-right: 10px;
+      overflow-y: auto;
       .cell-list-form {
         :deep(.el-select).search-key {
           width: 100px;
