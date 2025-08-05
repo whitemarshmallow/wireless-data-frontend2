@@ -224,7 +224,7 @@ export const useBeamSelectionStore = defineStore("beamSelection", {
 
       try {
         // API调用
-        const selectedTypes = this.selectedDataTypes.map((type) => type.key);
+        const selectedTypes = this.selectedDataTypes;
 
         const response = await fetch(
           getApiUrl("/api/beam-selection/image", baseUrl),
