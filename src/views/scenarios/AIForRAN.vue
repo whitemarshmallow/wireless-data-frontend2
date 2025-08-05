@@ -121,7 +121,7 @@ export default {
         id: "energysaving",
         name: "智慧节能",
         description:
-          "AI驱动的网络优化工具，支持KPI分析、参数调优与Viavi仿真，生成专业优化方案。",
+          "网络能耗优化监控平台，支持指标预测、节能配置与实时监控，实现基站智能节能降耗管理。",
         icon: "Connection",
         improvement: "↑ 50%",
         complexity: 5,
@@ -131,7 +131,7 @@ export default {
         id: "activebeamselection",
         name: "主动波束选择",
         description:
-          "AI驱动的网络优化工具，支持KPI分析、参数调优与Viavi仿真，生成专业优化方案。",
+          "智能波束选择与优化平台，支持多维数据训练、深度学习模型推理与性能评估，提升无线网络覆盖效果。",
         icon: "Connection",
         improvement: "↑ 50%",
         complexity: 5,

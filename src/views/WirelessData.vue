@@ -131,6 +131,18 @@
               ></textarea>
             </div>
 
+            <!-- 贡献者 -->
+            <div class="form-group">
+              <label class="form-label">贡献者</label>
+              <input
+                v-model="uploadForm.contributor"
+                type="text"
+                class="form-input"
+                placeholder="请输入贡献者姓名"
+                required
+              />
+            </div>
+
             <!-- 文件上传区域 -->
             <div class="form-group">
               <label class="form-label">上传数据文件</label>
@@ -187,6 +199,7 @@
                 :disabled="
                   !uploadForm.datasetType ||
                   !uploadForm.name ||
+                  !uploadForm.contributor ||
                   uploadedFiles.length === 0 ||
                   uploading
                 "
@@ -300,6 +313,7 @@ export default {
       datasetType: "",
       name: "",
       description: "",
+      contributor: "", // 新增贡献者字段
     });
     const uploadedFiles = ref([]);
     const fileInput = ref(null);
@@ -346,6 +360,7 @@ export default {
         datasetType: "",
         name: "",
         description: "",
+        contributor: "", // 重置贡献者字段
       };
       uploadedFiles.value = [];
       if (fileInput.value) {
@@ -361,6 +376,7 @@ export default {
       formData.append("datasetType", uploadForm.value.datasetType);
       formData.append("name", uploadForm.value.name);
       formData.append("description", uploadForm.value.description);
+      formData.append("contributor", uploadForm.value.contributor); // 添加贡献者信息
 
       // 添加文件
       uploadedFiles.value.forEach((file) => {
@@ -447,10 +463,11 @@ export default {
           ),
         ];
 
-        // 3. 创建数据集对象（包含后端返回的文件ID）
+        // 3. 创建数据集对象（包含后端返回的文件ID和贡献者信息）
         const newDataset = {
           name: uploadForm.value.name,
           description: uploadForm.value.description,
+          contributor: uploadForm.value.contributor, // 添加贡献者信息
           size: `${totalSizeGB} GB`,
           format: formats.join(", "),
           id: uploadResult.datasetId, // 使用后端返回的ID
@@ -637,6 +654,7 @@ export default {
 </script>
 
 <style scoped>
+/* 样式代码保持不变，这里省略以节省空间 */
 /* 动画相关样式 */
 .animate-fade-up {
   opacity: 0;

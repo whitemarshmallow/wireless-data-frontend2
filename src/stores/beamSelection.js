@@ -60,19 +60,19 @@ export const useBeamSelectionStore = defineStore("beamSelection", {
     performanceData: [
       {
         metric: "平均速率",
-        rawData: "18.93",
+        rawData: "14.44",
         finelyFiltered: "18.93",
         coarselyFiltered: "15.95",
       },
       {
         metric: "90百分位速率",
-        rawData: "25.55",
+        rawData: "21.36",
         finelyFiltered: "25.55",
         coarselyFiltered: "23.09",
       },
       {
         metric: "10百分位数据",
-        rawData: "7.58",
+        rawData: "5.1",
         finelyFiltered: "7.58",
         coarselyFiltered: "5.55",
       },
@@ -244,7 +244,10 @@ export const useBeamSelectionStore = defineStore("beamSelection", {
         const result = await response.json();
         console.log("图像生成结果:", result);
 
-        this.resultImages = result.images;
+        this.resultImages = (result.images || []).map((img) => ({
+          ...img,
+          url: getApiUrl(img.url, baseUrl),
+        }));
         console.log("resultImages:", this.resultImages);
 
         this.showResults = true;

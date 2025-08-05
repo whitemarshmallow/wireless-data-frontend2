@@ -84,6 +84,12 @@
               <div class="dataset-description">{{ dataset.description }}</div>
               <div class="dataset-meta">
                 <div class="meta-row">
+                  <span class="meta-label">贡献者：</span>
+                  <span class="meta-value">{{
+                    dataset.contributor || "未知"
+                  }}</span>
+                </div>
+                <div class="meta-row">
                   <span class="meta-label">大小：</span>
                   <span class="meta-value">{{ dataset.size }}</span>
                 </div>
@@ -138,6 +144,12 @@
           <div class="dataset-info">
             <h4>{{ selectedDataset?.name }}</h4>
             <p>{{ selectedDataset?.description }}</p>
+            <div class="contributor-info">
+              <span class="contributor-label">贡献者：</span>
+              <span class="contributor-name">{{
+                selectedDataset?.contributor || "未知"
+              }}</span>
+            </div>
           </div>
 
           <div class="download-options">
@@ -322,7 +334,9 @@ export default {
         filtered = filtered.filter(
           (dataset) =>
             dataset.name.toLowerCase().includes(keyword) ||
-            dataset.description.toLowerCase().includes(keyword)
+            dataset.description.toLowerCase().includes(keyword) ||
+            (dataset.contributor &&
+              dataset.contributor.toLowerCase().includes(keyword))
         );
       }
 
@@ -979,9 +993,23 @@ export default {
 }
 
 .dataset-info p {
-  margin: 0;
+  margin: 0 0 8px 0;
   color: #697586;
   font-size: 14px;
+}
+
+.contributor-info {
+  font-size: 13px;
+  color: #697586;
+}
+
+.contributor-label {
+  font-weight: 500;
+}
+
+.contributor-name {
+  color: #263fff;
+  font-weight: 500;
 }
 
 .download-options {
